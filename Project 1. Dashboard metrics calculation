@@ -3,3 +3,9 @@ SELECT log_date, COUNT(DISTINCT user_id) as dau, COUNT(*) AS events
 FROM events_log
 GROUP BY log_date
 ORDER BY log_date;
+
+-- 2. Расчет числа активных пользователей по источникам привлечения
+SELECT utm_source, COUNT(DISTINCT user_id) AS users
+FROM events_log
+GROUP BY utm_source
+ORDER BY users DESC
