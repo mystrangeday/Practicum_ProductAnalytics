@@ -1,0 +1,5 @@
+-- 1. Рассчет DAU
+SELECT log_date, COUNT(DISTINCT user_id) as dau, COUNT(*) AS events
+FROM events_log
+GROUP BY log_date
+ORDER BY log_date;
