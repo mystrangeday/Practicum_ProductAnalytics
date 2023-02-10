@@ -117,3 +117,19 @@ SELECT t.object_id,
 FROM top t
 LEFT JOIN movie_rates m ON m.object_id = t.object_id
 ORDER BY users DESC
+
+
+-- 5. Воронка покупок
+SELECT log_date,
+       app_id,
+       utm_source,
+       name,
+       object_id  AS offer_name,
+       COUNT(DISTINCT user_id) AS all_users
+FROM events_log
+WHERE name IN ('offerShow','offerClicked','purchase') AND object_id ~ 'off'
+GROUP BY log_date,
+         app_id,
+         utm_source,
+         name,
+         object_id
