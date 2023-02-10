@@ -98,3 +98,22 @@ GROUP BY page_open.log_date,
          page_open.app_id,
          page_open.utm_source
 ORDER BY page_open.log_date
+
+
+-- 4. Расчет средней оценки фильма и числа пользователей, которые его посмотрели
+WITH top AS
+  (SELECT object_id, COUNT(DISTINCT user_id) AS users
+   FROM events_log
+   WHERE name = 'startMovie'
+   GROUP BY object_id),
+     movie_rates AS
+  (SELECT object_id, AVG(object_value::FLOAT) AS avg_rate
+   FROM events_log
+   WHERE name = 'rateMovie'
+   GROUP BY object_id)
+SELECT t.object_id,
+       t.users,
+       m.avg_rate
+FROM top t
+LEFT JOIN movie_rates m ON m.object_id = t.object_id
+ORDER BY users DESC
